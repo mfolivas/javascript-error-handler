@@ -18,7 +18,7 @@ class BaseError extends Error {
         return {
             name: this.name,
             httpStatusCode: this.httpStatusCode,
-            description: this.description,
+            description: this.message,
             isOperational: this.isOperational
         }
     }
