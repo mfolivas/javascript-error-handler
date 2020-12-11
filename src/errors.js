@@ -8,6 +8,7 @@ const HttpStatusCode = {
 
 class BaseError extends Error {
     constructor(name, httpStatusCode, description, isOperational) {
+        
         super(description)
         this.name = name
         this.httpStatusCode = httpStatusCode

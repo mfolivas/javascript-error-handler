@@ -1,5 +1,5 @@
 const { expect } = require('chai')
-const { BaseError, HTTP400Error } = require('../src/base-error')
+const { BaseError, HTTP400Error } = require('../src/errors')
 const ErrorHandler = require('../src/error-handler')
 
 
