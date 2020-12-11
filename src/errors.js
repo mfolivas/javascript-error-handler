@@ -8,7 +8,9 @@ const HttpStatusCode = {
 
 class BaseError extends Error {
     constructor(name, httpStatusCode, description, isOperational) {
-        
+        if (!Object.values(HttpStatusCode).includes(httpStatusCode)) {
+            throw new TypeError('Invalid HTTP status code')
+        }
         super(description)
         this.name = name
         this.httpStatusCode = httpStatusCode

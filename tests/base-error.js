@@ -1,10 +1,10 @@
 const { expect } = require('chai')
-const { BaseError, HTTP400Error } = require('../src/errors')
+const { BaseError, HttpStatusCode } = require('../src/errors')
 const ErrorHandler = require('../src/error-handler')
 
 
 
-const customErrorInstance = new BaseError('BaseError', 400, 'Base Error', false)
+const customErrorInstance = new BaseError('BaseError', HttpStatusCode.NOT_FOUND, 'Base Error', false)
 
 const throwFn = () => {
     throw customErrorInstance
