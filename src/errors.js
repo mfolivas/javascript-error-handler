@@ -1,8 +1,7 @@
-
 const HttpStatusCode = {
     OK: 200,
-    NOT_FOUND: 400,
-    BAD_REQUEST: 404,
+    BAD_REQUEST: 400,
+    NOT_FOUND: 404,
     INTERNAL_SERVER: 500
 }
 
@@ -30,18 +29,25 @@ class BaseError extends Error {
 
 class APIError extends BaseError {
     constructor(name, httpStatusCode = HttpStatusCode.INTERNAL_SERVER, isOperational = true, description = 'internal server error') {
-        super(name, httpStatusCode, isOperational, description)
+        super(name, httpStatusCode, description, isOperational)
     }
 }
 
-class HTTP400Error extends APIError {
+class InvalidRequestError extends APIError {
+    constructor(message) {
+        super('BAD REQUEST', HttpStatusCode.BAD_REQUEST, true, message)
+    }
+}
+
+class HTTP404Error extends APIError {
     constructor(...args) {
         super('NOT FOUND', HttpStatusCode.NOT_FOUND, true, `The following fields are required: ${args}`)
     }
 }
 
 module.exports = {
-    HTTP400Error,
+    InvalidRequestError,
+    HTTP404Error,
     HttpStatusCode,
     APIError,
     BaseError
