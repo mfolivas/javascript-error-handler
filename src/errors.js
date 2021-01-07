@@ -35,13 +35,13 @@ class APIError extends BaseError {
 
 class InvalidRequestError extends APIError {
     constructor(message) {
-        super('BAD REQUEST', HttpStatusCode.BAD_REQUEST, true, message)
+        super('InvalidRequestError', HttpStatusCode.BAD_REQUEST, true, message)
     }
 }
 
 class NotFoundError extends APIError {
     constructor(...args) {
-        super('NOT FOUND', HttpStatusCode.NOT_FOUND, true, `The following fields are required: ${args}`)
+        super('NotFoundError', HttpStatusCode.NOT_FOUND, true, `The following fields are required: ${args}`)
     }
 }
 

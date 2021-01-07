@@ -1,6 +1,6 @@
 const { expect } = require('chai')
 const { BaseError, HttpStatusCode, InvalidRequestError } = require('../src/errors')
-const ErrorHandler = require('../src/error-handler')
+const ErrorHandler = require('../src/error-handler').errorHandler
 
 const customErrorInstance = new BaseError('BaseError', HttpStatusCode.NOT_FOUND, 'Base Error', false)
 
@@ -41,5 +41,24 @@ describe('error handler', () => {
             throw requiredFieldsError
         }
         expect(citationFun).to.throw(InvalidRequestError)
+    })
+
+
+    it('should return a JSON error whenever it stated as such', async () => {
+        const requiredFieldsError = new InvalidRequestError('Invalid citation')
+        const citationFun = async () => {
+            try {
+                throw requiredFieldsError
+            } catch (error) {
+                return await ErrorHandler(error)
+            }
+        }
+        const results = await citationFun()
+
+        expect(results.name).to.equal('InvalidRequestError')
+        expect(results.httpStatusCode).to.equal(400)
+        expect(results.description).to.equal('Invalid citation')
+        expect(results.name).to.equal('InvalidRequestError')
+        expect(results.isOperational).is.true
     })
 })
