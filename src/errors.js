@@ -39,7 +39,7 @@ class InvalidRequestError extends APIError {
     }
 }
 
-class HTTP404Error extends APIError {
+class NotFoundError extends APIError {
     constructor(...args) {
         super('NOT FOUND', HttpStatusCode.NOT_FOUND, true, `The following fields are required: ${args}`)
     }
@@ -47,7 +47,7 @@ class HTTP404Error extends APIError {
 
 module.exports = {
     InvalidRequestError,
-    HTTP404Error,
+    NotFoundError,
     HttpStatusCode,
     APIError,
     BaseError
