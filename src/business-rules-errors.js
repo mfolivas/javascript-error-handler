@@ -12,13 +12,14 @@ const hasNoCitationNumber = citation => R.isNil(R.prop('citationNumber', citatio
 const validateCitation = validate(hasNoCitationNumber, 'Citation number is required')
 
 const hasMissingAttribute = (object, field) => !R.has(field, object)
-const hasMissingAttributes = (object, fields) => {
+
+const hasMissingAttributes = R.curry((fields, object) => {
     const results = R.map(field => hasMissingAttribute(object, field), fields)
     if (results.every(result => result === true)) {
         throw new TypeError('The following fields are required: ' + fields.join(', '))
     }
     return object
-}
+})
 
 module.exports = {
     validateCitation,
