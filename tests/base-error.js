@@ -1,4 +1,4 @@
-const { expect, fail } = require('chai')
+const { expect } = require('chai')
 const { BaseError, HttpStatusCode, InvalidRequestError } = require('../src/errors')
 const ErrorHandler = require('../src/error-handler').errorHandler
 
