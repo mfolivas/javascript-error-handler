@@ -21,13 +21,22 @@ const logger = createLogger({
 module.exports.errorHandler = async (error, stringifyError = false) => {
     logger.error('Error message from error handler', error)
     await toEventHandler(error)
-    if (error.isOperational) {
-        if (stringifyError) {
-            JSON.stringify({ error: error.toJSON() })
-        }
-        return error.toJSON()
-    }
+
+    const errorResponse = prettifiedError(error, stringifyError)
     logger.info('Finished processing the error')
+    if (errorResponse) {
+        return errorResponse
+    }
+    await toEventHandler(errorResponse)
+    throw error
+}
+
+const prettifiedError = (error, stringifyError = false) => {
+    if (error.isOperational) {
+        return (stringifyError) ? JSON.stringify({ error: error.toJSON() }) : error.toJSON()
+    } else if (stringifyError) {
+        return JSON.stringify({httpStatusCode: 500, error: error.message})
+    }
 }
 
 

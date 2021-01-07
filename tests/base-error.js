@@ -1,4 +1,4 @@
-const { expect } = require('chai')
+const { expect, fail } = require('chai')
 const { BaseError, HttpStatusCode, InvalidRequestError } = require('../src/errors')
 const ErrorHandler = require('../src/error-handler').errorHandler
 
@@ -60,5 +60,49 @@ describe('error handler', () => {
         expect(results.description).to.equal('Invalid citation')
         expect(results.name).to.equal('InvalidRequestError')
         expect(results.isOperational).is.true
+    })
+
+    it('should return a stringified JSON message', async () => {
+        const requiredFieldsError = new InvalidRequestError('Invalid citation')
+        const citationFun = async () => {
+            try {
+                throw requiredFieldsError
+            } catch (error) {
+                return await ErrorHandler(error, true)
+            }
+        }
+        const results = await citationFun()
+        expect(results).to.equal('{"error":{"name":"InvalidRequestError","httpStatusCode":400,"description":"Invalid citation","isOperational":true}}')
+
+    })
+
+    it('should return with a 500 http error code those exceptions that are not handled', async () => {
+        const randomError = new Error('Invalid citation')
+        const citationFun = async () => {
+            try {
+                throw randomError
+            } catch (error) {
+                return await ErrorHandler(error, true)
+            }
+        }
+        const results = await citationFun()
+        expect(results).to.equal('{"httpStatusCode":500,"error":"Invalid citation"}')
+    })
+
+    it('should throw an error', async () => {
+        const randomError = new Error('Random error message')
+        const citationFun = async () => {
+            try {
+                throw randomError
+            } catch (error) {
+                return await ErrorHandler(error)
+            }
+        }
+        try {
+            await citationFun()
+            expect.fail('should have thrown an error')
+        } catch (error) {
+            expect(error.message).to.equal('Random error message')
+        }        
     })
 })
