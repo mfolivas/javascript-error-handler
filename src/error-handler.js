@@ -1,5 +1,4 @@
 const { createLogger, format, transports } = require('winston')
-const R = require('ramda')
 
 const { combine, timestamp, json, errors,  } = format
 

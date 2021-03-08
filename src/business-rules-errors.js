@@ -14,8 +14,9 @@ const validateCitation = validate(hasNoCitationNumber, 'Citation number is requi
 const hasMissingAttribute = (object, field) => !R.has(field, object)
 
 const hasMissingAttributes = R.curry((fields, object) => {
-    const results = R.map(field => hasMissingAttribute(object, field), fields)
-    if (results.every(result => result === true)) {
+    const missingAttributes = R.map(field => hasMissingAttribute(object, field), fields)
+    const isMissingRequiredFields = missingAttributes.find(result => result === true)
+    if (isMissingRequiredFields) {
         throw new TypeError('The following fields are required: ' + fields.join(', '))
     }
     return object
