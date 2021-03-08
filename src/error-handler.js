@@ -15,11 +15,10 @@ const logger = createLogger({
 
 /**
  * 
- * @param {error} error will capture the error and return the application as JSON if it is operational.
+ * @param {Error} error will capture the error and return the application as JSON if it is operational.
  */
 module.exports.errorHandler = async (error, stringifyError = false) => {
     logger.error('Error message from error handler', error)
-    await toEventHandler(error)
 
     const errorResponse = prettifiedError(error, stringifyError)
     logger.info('Finished processing the error')
